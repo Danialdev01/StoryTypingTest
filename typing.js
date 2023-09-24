@@ -6,18 +6,26 @@ mistakeTag = document.querySelector(".mistake span"),
 wpmTag = document.querySelector(".wpm span");
 
 let timer,
-maxTime = 10,
+maxTime = 60,
 timeLeft = maxTime,
 charIndex = mistakes = isTyping = 0;
 
+// initionaize text in input contaner 
 function loadParagraph() {
+    // pick a random value based on paragraph length
     const ranIndex = Math.floor(Math.random() * paragraphs.length);
     typingText.innerHTML = "";
+
+    // split every charactr and insert input .typig-text p
     paragraphs[ranIndex].split("").forEach(char => {
         let span = `<span>${char}</span>`
         typingText.innerHTML += span;
     });
+
+    // add active to current character
     typingText.querySelectorAll("span")[0].classList.add("active");
+
+    // focus to input
     document.addEventListener("keydown", () => inpField.focus());
     typingText.addEventListener("click", () => inpField.focus());
 }
@@ -25,7 +33,9 @@ function loadParagraph() {
 function initTyping() {
     let characters = typingText.querySelectorAll("span");
     let typedChar = inpField.value.split("")[charIndex];
+
     if(charIndex < characters.length - 1 && timeLeft > 0) {
+
         if(!isTyping) {
             timer = setInterval(initTimer, 1000);
             isTyping = true;
@@ -50,6 +60,7 @@ function initTyping() {
         characters.forEach(span => span.classList.remove("active"));
         characters[charIndex].classList.add("active");
 
+        // calc vpm 
         let wpm = Math.round(((charIndex - mistakes)  / 5) / (maxTime - timeLeft) * 60);
         wpm = wpm < 0 || !wpm || wpm === Infinity ? 0 : wpm;
         
@@ -71,11 +82,12 @@ function initTimer() {
         return wpm;
     } else {
         
-        // FIXME betulkan kenapa takboleh run sambil typing
-        // let timeDelay = 5000; 
-        // setTimeout(saveData(), timeDelay);
-        // console.log("thi")
-        saveData();
+        // FIXME takboleh run kalau user masih typing lepas habis masa
+        let timeDelay = 5000; 
+        setTimeout(saveData(), timeDelay);
+
+        // saveData();
+
         clearInterval(timer);
     }
 }
@@ -84,14 +96,12 @@ function saveData() {
 
       let username = prompt("Username :")
 
-        if(!username){
-            username = "Guest";
-        }
-        console.log(username)
+        // if input empty = Guest
+        if(!username){username = "Guest";}
+
         // Retrieve existing data from session storage
         var data = JSON.parse(sessionStorage.getItem("userInputs")) || [];
 
-        console.log(wpm)
         let value = wpm;
         // Add the new user input to the data array
         data.push({ username: username, value: value });
