@@ -1,0 +1,83 @@
+:root{
+  --correct:green;
+  --incorrect:red;
+  --text-color:rgb(0, 177, 177);
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+body{
+  padding: 0 10px;
+  min-height: 100vh;
+  background: #17A2B8;
+}
+.wrapper{
+  width: 770px;
+  padding: 35px;
+  background: #fff;
+  border-radius: 10px;
+}
+.wrapper .input-field{
+  opacity: 0;
+  z-index: -999;
+  position: absolute;
+}
+.wrapper .content-box{
+  padding: 13px 20px 0;
+  border-radius: 10px;
+  border: 1px solid #bfbfbf;
+}
+.content-box .typing-text{
+  overflow: hidden;
+  max-height: 256px;
+}
+.typing-text::-webkit-scrollbar{
+  width: 0;
+}
+.typing-text p{
+  font-size: 21px;
+  text-align: justify;
+  letter-spacing: 1px;
+}
+.typing-text p span{
+  position: relative;
+}
+.typing-text p span.correct{
+  color: var(--correct);
+}
+.typing-text p span.incorrect{
+  color: var(--incorrect);
+  outline: 1px solid #fff;
+}
+.typing-text p span.active{
+  color: var(--text-color);
+}
+.typing-text p span.active::before{
+  position: absolute;
+  content: "";
+  height: 2px;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  border-radius: 5px;
+  background: #17A2B8;
+  animation: blink 1s ease-in-out infinite;
+}
+@keyframes blink{
+  50%{ 
+    opacity: 1; 
+  }
+}
+
+.content{
+  justify-content: center;
+  display: flex;
+  list-style: none;
+}
+.content li{
+  padding: 20px;
+}
