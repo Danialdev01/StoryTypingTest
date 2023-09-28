@@ -1,6 +1,5 @@
 const typingText = document.querySelector(".typing-text p"),
 inpField = document.querySelector(".wrapper .input-field"),
-tryAgainBtn = document.querySelector(".content-box button"),
 timeTag = document.querySelector(".time span b"),
 mistakeTag = document.querySelector(".mistake span"),
 wpmTag = document.querySelector(".wpm span");
@@ -66,10 +65,7 @@ function initTyping() {
         
         wpmTag.innerText = wpm;
         mistakeTag.innerText = mistakes;
-    } else {
-        clearInterval(timer);
-        inpField.value = "";
-    }   
+    }
 }
 let wpm;
 
@@ -82,12 +78,8 @@ function initTimer() {
         return wpm;
     } else {
         
-        // FIXME takboleh run kalau user masih typing lepas habis masa
         let timeDelay = 5000; 
-        setTimeout(saveData(), timeDelay);
-
-        // saveData();
-
+        saveData();
         clearInterval(timer);
     }
 }
