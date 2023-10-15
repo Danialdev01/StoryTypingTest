@@ -5,7 +5,7 @@ mistakeTag = document.querySelector(".mistake span"),
 wpmTag = document.querySelector(".wpm span");
 
 let timer,
-maxTime = 60,
+maxTime = 10,
 timeLeft = maxTime,
 charIndex = mistakes = isTyping = 0;
 
@@ -42,15 +42,21 @@ function initTyping() {
         if(typedChar == null) {
             if(charIndex > 0) {
                 charIndex--;
+                // if char is labeled incorrect - 1 mistake
                 if(characters[charIndex].classList.contains("incorrect")) {
                     mistakes--;
                 }
                 characters[charIndex].classList.remove("correct", "incorrect");
             }
-        } else {
+        } 
+        else {
+            // if char is correct 
             if(characters[charIndex].innerText == typedChar) {
                 characters[charIndex].classList.add("correct");
-            } else {
+
+            } 
+            // if char is wrong 
+            else {
                 mistakes++;
                 characters[charIndex].classList.add("incorrect");
             }
@@ -61,7 +67,6 @@ function initTyping() {
 
         // calc vpm 
         let wpm = Math.round(((charIndex - mistakes)  / 5) / (maxTime - timeLeft) * 60);
-        wpm = wpm < 0 || !wpm || wpm === Infinity ? 0 : wpm;
         
         wpmTag.innerText = wpm;
         mistakeTag.innerText = mistakes;
@@ -78,36 +83,49 @@ function initTimer() {
         return wpm;
     } else {
         
-        let timeDelay = 5000; 
         saveData();
+        showTopUsers();
         clearInterval(timer);
     }
 }
 
 function saveData() {
 
-      let username = prompt("Username :")
+    let username = prompt("Username :");
+    // if input empty = Guest
+    if(!username){username = "Guest";}
+    let score = wpm;
 
-        // if input empty = Guest
-        if(!username){username = "Guest";}
+    localStorage.setItem(username, score);
+    
+}
+function showTopUsers() {
+    var users = [];
+    // Iterate through all items in local storage
+    for (var i = 0; i < localStorage.length; i++) {
+        var username = localStorage.key(i);
+        var score = parseInt(localStorage.getItem(username));
 
-        // Retrieve existing data from session storage
-        var data = JSON.parse(sessionStorage.getItem("userInputs")) || [];
-
-        let value = wpm;
-        // Add the new user input to the data array
-        data.push({ username: username, value: value });
-
-        // Store the updated data in session storage
-        sessionStorage.setItem("userInputs", JSON.stringify(data));
-
-        // Display all the user inputs using prompt
-        var displayText = "";
-        for (var i = 0; i < data.length; i++) {
-            displayText += "Username: " + data[i].username + ", Value: " + data[i].value + "\n";
-        }
-        alert(displayText);
+        // Add user object to the array
+        users.push({ username: username, score: score });
     }
+
+    // Sort the users array based on score in descending order
+    users.sort(function(a, b) {
+        return b.score - a.score;
+    });
+
+    // Get the top 10 users
+    var topUsers = users.slice(0, 10);
+
+    // Display the top 10 users
+    var message = "Top 10 Users:\n";
+    for (var j = 0; j < topUsers.length; j++) {
+        message += (j + 1) + ". " + topUsers[j].username + " - " + topUsers[j].score + "\n";
+    }
+
+    alert(message);
+}
 
 
 loadParagraph();
