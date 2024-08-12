@@ -5,7 +5,7 @@ mistakeTag = document.querySelector(".mistake span"),
 wpmTag = document.querySelector(".wpm span");
 
 let timer,
-maxTime = 10,
+maxTime = 60,
 timeLeft = maxTime,
 charIndex = mistakes = isTyping = 0;
 
