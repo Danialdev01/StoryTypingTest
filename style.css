@@ -1,3 +1,5 @@
+/* Lines 1-27 commented out (disabled) */
+/*
 :root{
   --correct:green;
   --incorrect:red;
@@ -25,6 +27,7 @@ body{
   z-index: -999;
   position: absolute;
 }
+*/
 .wrapper .content-box{
   padding: 13px 20px 0;
   border-radius: 10px;
